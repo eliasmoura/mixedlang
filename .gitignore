@@ -1,0 +1,10 @@
+#packages
+.meteor/*.un~
+packages
+translate
+
+#vim temp files
+*.swp
+*~
+*.un~
+
