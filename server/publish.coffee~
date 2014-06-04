@@ -1,0 +1,35 @@
+###################
+#   Client subscritions publish
+###################
+
+Meteor.publish 'requests', ->
+    groups = User_Group.find {
+        user:this.userId,
+        mod:true
+    }
+    groupArray = new Array()
+    groupsRequest_paticipation = false
+    response = new Array()
+    friendshipRequests = UserRequest.find {request_to: this.userId}
+    
+    if groups
+        groups.forEach (row) ->
+            groupArray.push row.group
+        groupsRequest_particioation = GroupRequest.find {group: {$in: groupArray}, type:1}#find the
+    if friendshipRequests
+        response.push friendshipRequests
+    if groupsRequest_participation
+        response.push groupsRequest_paticipation
+    return response
+Meteor.pusblish 'requests-invite', ->
+    GroupRequest.find {user:this.userdId, type:2}
+
+Meteor.publish 'user-contact', ->
+    UsersRelations.find {user:this.userId}
+Meteor.publish 'privatechat', ->
+    PrivateChat.find {user:this.userId}
+Meteor.publish 'user-list', ->
+    Meteor.users.find {}, {fields:{_id:1,profile:1}}
+Meteor.publish 'privatemessages', (privatechat) ->
+    PrivateMessages.find {chat:privatechat}
+

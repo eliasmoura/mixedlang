@@ -1,0 +1,374 @@
+<template name="user-profile">
+	User info!
+</template>
+
+<template name="user-side">
+	Side bar, User!
+</template>
+
+<!-- <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li><a href="#">Action</a></li>
+          <li><a href="#">Another action</a></li>
+          <li><a href="#">Something else here</a></li>
+          <li class="divider"></li>
+          <li class="dropdown-header">Dropdown header</li>
+          <li><a href="#">Separated link</a></li>
+          <li><a href="#">One more separated link</a></li>
+        </ul> -->
+
+<template name="user">
+		{{#if user}}
+			<a id="user" class="dropdown-toggle" href="#" data-toggle="dropdown" >
+				<span class="glyphicon glyphicon-user {{user.profile.status}}" id="userstatus" data-container="body" data-toggle="popover" data-placement="botton" data-html="true"></span>
+				{{user.profile.name}}
+				<span class="badge">{{notifications.total}}</span>
+				<span class="caret"></span>
+			</a>
+			<ul class="dropdown-menu">
+				<li><a class="navigation" id="profile" href="#">{{mf 'profile' 'Profile'}}</a></li>
+				<li><a class="navigation" id="email" href="#">
+					{{mf 'email' 'Email'}} <span class="badge">{{notifications.newemails}}</span></a>
+				</li>
+				<li><a class="navigation" href="#" id='notification'>{{mf 'notification' 'Notifications'}} <span class="badge">{{notifications.requests.total}}</span></a></li>
+				<li class="divider"></li>
+				<li><a class="navigation" href="#" id="logoutButton">{{mf 'log_out' 'Log out'}}</a></li>
+			</ul>
+			{{#if first_login}}
+				{{> additional_info}}
+			{{/if}}
+		{{else}}
+				<a id="login" class="dropdown-toggle" href="#" data-toggle="dropdown" >
+					{{mf 'sign_in' 'Sign in'}}
+					<span class="caret"></span>
+				</a>
+			{{#if login}}
+				{{> login_form}}
+			{{else}}
+				{{> register_form}}
+			{{/if}}
+		{{/if}}
+
+		{{#if notifications.requests}}
+			{{>notification}}
+		{{/if}}
+		
+		{{#if add_user}}
+			{{> request_friendship}}
+		{{/if}}
+		
+		{{#if user_modal}}
+			{{> user_modal}}
+		{{/if}}
+
+		{{#if email}}
+		 {{> emails}}
+		{{/if}}
+</template>
+
+
+<template name="notification">
+	<div class="modal fade row" id="notificationModal" tabindex="-1" role="dialog" aria-labelledby="notificationModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+	    	<div class="modal-content">
+		    	<div class="modal-header">
+		        	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		        	<h4 class="modal-title" id="registerModalLabel">{{mf 'notifications'}}</h4>
+		    	</div>
+		    	<div class="modal-body"><!--content here-->
+		    		<h4 class="friendship-request">{{mf 'friendship-request' 'User friendship request'}}({{notifications.requests.friendship.length}}):</h4>
+		        	{{#each notifications.requests.friendship}}
+			        	<div class="friend-request">
+			        		<label for="" class="username">{{user.profile.name}} {{user.profile.lastname}}:</label>
+			        		<span id="">{{message}} </span>
+			        		<input type='button' class="acept btn btn-primary" id="{{request}}" value="{{mf 'acept' 'Acept'}}"/>
+			        		<input type="button" class="deny btn btn-default" id="{{request}}" value="{{mf 'deny' 'Deny'}}" />
+			        		<input type="text" value="{{type.type}}" class="request-type{{request}} hide"/>
+			        	</div>
+			        {{/each}}
+			        <h4 class="participation-request">{{mf 'participation-request' 'Group participation request'}}({{notifications.requests.participation.length}}):</h4>
+			        {{#each notifications.requests.participation}}
+			        	<div class="participation-request">
+			        		<label for="" class="username" id="user._id">{{user.profile.name}} {{user.profile.lastname}}:</label>
+			        		<span id="">{{group.message}}</span>
+			        		<input type='button' class="acept btn btn-primary" id="{{group._id}}" value="{{mf 'acept'}}" />
+			        		<input type="button" class="deny btn btn-default" id="{{group._id}}" value="{{mf 'deny' }}" />
+			        		<input type="text" value="{{group.type}}" class="request-type{{group._id}} hide"/>
+			        	</div>
+			        {{/each}}
+			        <h4 class="invatation-request">{{mf 'invitation-request' 'Group participation invitation request'}}({{notifications.requests.invitation.length}}):</h4>
+			        {{#each notifications.requests.invitation}}
+			        	<div class="intation-request">
+			        		<label for="" class="group">{{group.name}}:</label><span id="">{{request.message}} </span>
+			        		<input type='button' class="acept btn btn-primary" id="{{request._id}}" value="{{mf 'acept'}}"/>
+			        		<input type="button" class="deny btn btn-default" id="{{request._id}}" value="{{mf 'deny'}}" />
+			        		<input type="text" value="{{request.type}}" class="request-type{{request._id}} hide"/>
+			        	</div>
+			        {{/each}}
+		    	</div>
+		    	<div class="modal-footer">
+		    		<button type="button" class="btn btn-primary" id="notification_close" data-dismiss="modal">{{mf 'close'}}</button>
+		    	</div>
+		    </div>
+		</div>
+	</div>
+</template>
+
+<template name="user_finder_modal">
+	<div class="modal fade" id="user-finder-modal" tabindex="-1" role="dialog" aria-labelledby="user-finder-ModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+	    	<div class="modal-content">
+	      		<div class="modal-header">
+	        		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	        		<h4 class="modal-title" id="group-chat-finder-ModalLabel">{{mf 'find-user' 'Find user'}}</h4>
+	      		</div>
+	    		<div class="modal-body"><!--content here-->
+		        	<div class="panel panel-default">
+		        		<div clas="user-finder-tool panel panel-default">
+		        			<form action="submit" class="user-finder " id="user-finder-form">
+								<div class="">
+									<div class="form-user-finder">
+										<input type="text" class="form-control" placeholder="{{mf 'user-name' 'User name'}}" id="user-name-f" />
+									</div>
+								</div>
+							</form>
+						</div>
+						{{> user_finder}}
+					</div>
+	    		</div>
+			    <div class="modal-footer">
+			    	<input type="button" class="btn btn-default" id="user-finder-btn-close" data-dismiss="modal" value="{{mf 'close'}}" />
+			        <input type="button" class="btn btn-primary" id="user-finder-btn" value="{{mf 'find'}}" />
+			    </div>
+	    	</div>
+		</div>
+	</div>
+</template>
+
+<template name="user_finder">
+	<div class="users-found panel panel-default">
+		{{#each user_found}}
+			<div class="user-found panel panel-defaul" id="{{_id}}">
+				<div class="panel-heading">
+					<h4 class="panel-title">{{profile.name}} {{profile.lastname}}
+						<span class="btn-group-xs">
+							<span class="send-request plus glyphicon glyphicon-plus btn btn-default" id="{{_id}}" title="{{mf 'invite-friendship' 'Sen a friendship request'}}"></span> 
+						</span>
+					</h4>
+					<!--Owner:<label id="owner._id"> {{owner.profile.name}} </label>-->	
+				</div>
+				<div class="panel-body">
+					<div class="user panel panel-info">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+								<a data-toggle-to="panel-group" data-toggle="collapse" data-parent="#accordion" href="#">{{mf 'details' 'Details'}}:</a>
+							</h4>
+						</div>
+						<div class="panel-collapse collapse out" id="panel-group">
+								<div class="panel panel-info">
+									<div class="panel-heading"> {{mf 'user-info' 'User basic info'}}:</div>
+									<div class="panel-body">
+										<div class="col-xs-6 col-md-3">
+										    <a href="#" class="thumbnail">
+										    	<img data-src="holder.js/300x200" alt="">
+										    </a>
+										</div>
+										<div>
+										<a href="www.google.com.br/#q={{user_modal.user.city}}">{{user.city}}</a>, <a href="www.google.com.br/#q={{user.country}}">{{user.country}}</a>
+
+										<label for="birthday">{{mf 'birthday' 'Birthday'}}:</label> <span>{{user.birthday}}</span>
+									</div>
+								</div>
+							</div>
+							<div class="panel panel-info">
+								<div class="panel-heading"> {{mf 'user-languages' 'User languages info'}}:</div>
+								<div class="panel-body">
+									<label for="know">{{mf 'know' 'Know'}}:</label>
+									<div class="know">
+										<div><a href="www.google.com.br/#q={{user.nativelang}}">{{user.nativelang}}</a></div>
+									</div>
+									<label for="learning">{{mf 'learning' 'Learning'}}:</label>
+									<div class="learning">
+										{{#each user.learninglanguages}}
+										<div><a href="www.google.com.br/#q={{lang}}">{{lang}}</a></div>
+										{{/each}}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		{{/each}}
+	</div>
+</template>
+
+
+<template name="request_friendship">
+	<div id="request-friendship-modal" class="modal fade modal-request-friendship" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="group-chat-finder-ModalLabel">{{mf 'add-user' 'Add contact'}}</h4>
+			</div>
+		    <div class="modal-content">
+		    	<form action="submit" id="request-friendship-form">
+		    		<textarea name="request-friendship" id="request-friendship-msg" class="form-control" rows="10" placeholder="{{mf 'msg' 'Message'}}"></textarea>
+		    		<div>
+		    			<input type="radio" name="request-friendship-radio" id="request-friendship-check-friend">
+		    			<label for="request-friendship-check-friend">{{mf 'friend' 'Friend'}}</label>
+		    			<input type="radio" name="request-friendship-radio" id="request-friendship-check-contact">
+		    			<label for="request-friendship-check-contact">{{mf 'contact' 'contact'}}</label>
+		    			<input type="checkbox" name="request-friendship-check" id="request-friendship-check-teacher">
+		    			<label for="request-friendship-check-teacher">{{mf 'teacher' 'Teacher'}}</label>
+		    			<input type="checkbox" name="request-friendship-check" id="request-friendship-check-student">
+		    			<label for="request-friendship-check-student">{{mf 'student' 'Student'}}</label>
+
+		    		</div>
+		    	</form>
+		    </div>
+		     <div class="modal-footer">
+		    	<input type="button" class="btn btn-default" id="request-friendship-btn-close" data-dismiss="modal" value="{{mf 'close'}}" />
+		        <input type="button" class="btn btn-primary" id="request-friendship-btn" value="{{mf 'send'}}" />
+		    </div>
+		</div>
+	</div>	
+</template>
+<template name="user_modal">
+	<div id="user-modal" class="modal fade in modal-user" tabindex="-1" role="dialog" aria-labelledby="user-ModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-sm">
+		    <div class="modal-content">
+		    	<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="user-ModalLabel">{{user_modal.action}}</h4>
+				</div>
+				<div class="modal-body row">
+					{{#if user_modal.add}}
+						{{> user_invite_request}}
+					{{/if}}
+					{{#if user_modal.send_email}}
+						{{> send_email}}
+					{{/if}}
+					{{#if user_modal.report}}
+						{{> report}}
+					{{/if}}
+					{{#if user_modal.group}}
+						{{> group}}
+					{{/if}}
+					{{#if user_modal.profile}}
+						{{> user_profile}}
+					{{/if}}
+				</div>
+				<div class="modal-footer">
+			    	<input type="button" class="btn btn-default" id="request-friendship-btn-close" data-dismiss="modal" value="{{mf 'close'}}" />
+			        <input type="button" class="btn btn-primary" id="request-friendship-btn" value="{{mf 'send'}}" />
+			    </div>
+		    </div>
+		</div>
+	</div>	
+</template>
+
+<!-- <template name="send_email">
+	<form action="submit" id="send-email-form">
+		<label for="user-name">{{mf 'to' 'To'}}:</label><input type="text" class="form-control emailto" placeholder="{{mf 'user'}}" name="user-name" value="{{user_modal.name}}" id="{{user_modal._id}}">
+		<label for="modal-text">{{mf 'msg' 'Message'}}:</label>
+		<textarea name="modal-text" id="send-email-msg" class="form-control" rows="10" placeholder="{{mf 'msg'}}"></textarea>
+		<div class="alert alert-danger alert-dismissable">
+		  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+		  <strong>Warning!</strong> Better check yourself, you're not looking too good.
+		</div>
+
+	</form>
+</template> -->
+<template name="user_invite_request">
+	<form action="submit" id="user-invite-request-form">
+		<label for="user-name">{{mf 'user' 'User'}}:</label><input type="text" class="form-control" name="user-name" placeholder="{{mf 'user'}}" value="{{user_modal.user.name}} {{user_modal.user.lastname}}" id="{{user_modal._id}}">
+		<div>
+			<input type="radio" name="request-friendship-radio" id="request-friendship-check-friend" class="user-form">
+			<label for="request-friendship-check-friend">{{mf 'friend' 'Friend'}}</label>
+			<input type="radio" name="request-friendship-radio" id="request-friendship-check-contact" class="user-form">
+			<label for="request-friendship-check-contact">{{mf 'contact' 'contact'}}</label>
+			<input type="checkbox" name="request-friendship-check" id="request-friendship-check-teacher" class="user-form">
+			<label for="request-friendship-check-teacher">{{mf 'teacher' 'Teacher'}}</label>
+			<input type="checkbox" name="request-friendship-check" id="request-friendship-check-student" class="user-form">
+			<label for="request-friendship-check-student">{{mf 'student' 'Student'}}</label>
+		</div>
+		<label for="modal-text">{{mf 'message' 'Message'}}:</label>
+		<textarea name="modal-text" id="user-modal-msg" class="form-control" rows="10" placeholder="{{mf 'reason'}}"></textarea>
+		<div class="alert alert-danger alert-dismissable">
+		  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+		  <strong>Warning!</strong> Better check yourself, you're not looking too good.
+		</div>
+
+	</form>
+</template>
+<template name="group">
+	<div class="panel panel-info">
+		<div class="panel-heading">{{mf 'groups' 'Groups'}}</div>
+		<div class="panel-body list-group">
+		{{#each group_manage}}
+			<div class="list-group-item">
+				<span class="btn-group-xs">
+					<span id="{{_id}}" class="plus glyphicon glyphicon-plus btn btn-default" title="{{mf 'invite_to_group' 'Invite the user for this group'}}"></span>
+				</span>
+				<span class="group" id="{{_id}}">{{name}}</span>
+			</div>
+		{{/each}}
+		</div>
+	</div>
+	
+</template>
+<template name="report">
+	<form action="submit" id="report-user-form">
+		<label for="user-name">{{mf 'report' 'Report'}}:</label><input type="text" class="form-control report-user" name="user-name" placeholder="{{mf 'user'}}" value="{{user_modal.name}}" id="{{user_modal._id}}">
+		<label for="modal-text">{{mf 'reason' 'Reason'}}:</label>
+		<textarea name="modal-text" id="user-modal-msg" class="form-control" rows="10" placeholder="{{mf 'reason'}}"></textarea>
+	</form>
+</template>
+<template name="user_profile">
+	{{#with user_modal}}
+		<div class="panel panel-info">
+			<div class="panel-heading"> {{mf 'user-info' 'User basic info'}}:</div>
+			<div class="panel-body">
+				<div class="col-xs-6 col-md-3">
+				    <a href="#" class="thumbnail">
+				    	<img data-src="holder.js/300x200" alt="">
+				    </a>
+				</div>
+				<div>
+					<a href="www.google.com.br/#q={{this.user.city}}">{{this.user.city}}</a>, <a href="www.google.com.br/#q={{this.user.country}}">{{this.user.country}}</a>
+
+					<br>{{mf 'birthday' 'Birthday'}}: <span>{{this.user.birthday}}</span>
+				</div>
+			</div>
+		</div>
+	<div class="panel panel-info">
+		<div class="panel-heading"> {{mf 'user-languages' 'User languages info'}}:</div>
+		<div class="panel-body">
+			<label for="know">{{mf 'know' 'Know'}}:</label>
+			<div class="know">
+				<div><a href='www.google.com.br/#q={{this.user.nativelang}}' target='_blank'>{{this.user.nativelang}}</a> ({{mf 'native' 'Native'}})</div>
+				{{#each this.user.knownlanguages}}
+					<div><a href="www.google.com.br/#q={{lang}}">{{lang}}</a> ({{mf 'fluent' 'Fluent'}})</div>
+				{{/each}}
+			</div>
+			<label for="learning">{{mf 'learning' 'Learning'}}:</label>
+			<div class="learning">
+				{{#each this.user.learninglanguages}}
+					<div><a href="www.google.com.br/#q={{lang}}">{{lang}}</a></div>
+				{{/each}}
+			</div>
+		</div>
+	</div>		
+	<div class="panel panel-info">
+		<div class="panel-heading"> {{mf 'user-description' 'User description'}}:</div>
+		<div class="panel-body">
+			{{this.user.description}}
+		</div>
+	</div>
+	{{/with}}
+</template>
+
+<template name="additional_info">
+	
+</template>

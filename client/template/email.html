@@ -1,0 +1,101 @@
+<template name="emails">
+	<div class="modal fade" id="emails-modal" tabindex="-1" role="dialog" aria-labelledby="emails-ModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="emails-ModalLabel">{{mf 'email' 'Email'}}</h4>
+				</div>
+				<div class="modal-body"><!--content here-->
+					<div clas="emails"> 
+						<!-- <form action="submit" class="group-finder" id="find-create-form"> -->
+							<ul class="nav nav-tabs nav-justified">
+								<li><a href="#" class="btn btn-default email {{email.sent}}" id="sent">{{mf 'sent' 'Sent'}}</a></li>
+								<li><a href="#" class="btn btn-default email {{email.received}}" id="received">{{mf 'received' 'Received'}}</a></li>
+								<li><a href="#" class="btn btn-default email {{email.send}}" id="send">{{mf 'send' 'Send'}}</a></li>
+							</ul>
+							<div class="">
+								{{#if email.sent}}
+									{{> sent_emails}}
+								{{/if}}
+								{{#if email.received}}
+									{{> received_emails}}
+								{{/if}}
+								{{#if email.send}}
+									{{> send_email}}
+								{{/if}}
+							</div>
+						<!-- </form> -->
+					</div>
+				</div>
+				<div class="modal-footer">
+					<input type="button" class="btn btn-default" id="close_emails" data-dismiss="modal" value="{{mf 'close'}}" />
+					<input type="button" class="btn btn-primary" id="send-btn" value="{{mf 'Send'}}" />
+				</div>
+			</div>
+		</div>
+	</div>
+</template>
+
+<template name="sent_emails">
+	{{#if emails.sent}}
+		{{#each emails.sent}}
+			<div class="pane panel-info">
+				<div class="heading">
+					<div class="col-xs-6 col-md-3">
+					    <a href="#" class="thumbnail">
+					    	<img data-src="holder.js/300x200" alt="">
+					    </a>
+					</div>
+					<a href="#" class="username" id="{{this.user._id}}">{{this.user.profile.name}}</a>
+					<a href="#" class="subject" data-toggle="collapse" data-toggle-to="{{_id}}" data-parent="#accordion" id="subject">{{subject}}</a>
+				</div>
+				<div class="panel-body panel-collapse collapse" id="{{_id}}">
+					{{message}}
+				</div>
+			</div>
+		{{/each}}
+	{{else}}
+		None!
+	{{/if}}
+</template>
+
+<template name="send_email">
+	<form action="submit" id="send-email-form">
+		<label for="user-name">{{mf 'to' 'To'}}:</label>
+		<input type="text" class="form-control emailto" placeholder="{{mf 'user'}}" name="user-name" value="{{email.user.profile.name}}" id="{{email.user._id}}">
+		<label for="subject">{{mf 'subject' 'Subject'}}:</label>
+		<input type="text" class="form-control subject" placeholder="{{mf 'subject'}}" name="subject">
+		<label for="modal-text">{{mf 'msg' 'Message'}}:</label>
+		<textarea name="modal-text" id="send-email-msg" class="form-control" rows="10" placeholder="{{mf 'msg'}}"></textarea>
+		<div class="alert alert-danger alert-dismissable">
+		  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+		  <strong>Warning!</strong> Better check yourself, you're not looking too good.
+		</div>
+
+	</form>
+</template>
+
+<template name="received_emails">
+	{{#if emails.received}}
+		{{#each emails.received}}
+			<div class="pane panel-info">
+				<div class="heading">
+					<div class="col-xs-6 col-md-3">
+					    <a href="#" class="thumbnail">
+					    	<img data-src="holder.js/300x200" alt="">
+					    </a>
+					</div>
+					<a href="#" class="username" id="{{this.user._id}}">{{this.user.profile.name}}</a>
+				</div>
+				<div class="panel body">
+					{{message}}
+				</div>
+			</div>
+		{{/each}}
+	{{else}}
+		None!
+	{{/if}}
+</template>
+
+

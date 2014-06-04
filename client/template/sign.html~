@@ -1,0 +1,222 @@
+<template name="login_form">
+	<ul class="dropdown-menu" >
+		<li>
+			<form class="login-form" id="login-form" action="submit">
+				<div class="input-group input-group-sm">
+					<div class="input-group input-group-sm">
+					<input type="email" id="login_email" class="form-control" placeholder="email">
+					<input type="password" id="login_passwd" class="form-control" placeholder="password">
+					<!-- <span class="input-group-addon " id="login-submit"> -->
+						
+					<!-- </span> -->
+					</div>
+					<button type="submit" class="form-control btn btn-primary"> {{mf 'enter' 'Enter'}}</button>
+				</div>
+			</form>
+		</li>
+		<li class="divider"></li>
+		<li>
+			<a href="#" class='fgpasswd row'>{{mf 'reset_password' 'Reset my password'}}</a>
+			<a href="#" class='newUser row'>{{mf 'create_user' 'Create user'}}</a>
+		</li>
+		{{#if reset_passwd}}
+			{{> reset_passwd}}
+		{{/if}}
+	</ul>
+</template>
+
+<template name="reset_passwd">
+	<div id="reset-passwd-modal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="reset-passwd-ModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-sm">
+		    <div class="modal-content">
+		    	<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="reset-passwd-ModalLabel">{{mf 'reset-passwd' 'Reset my passworld'}}</h4>
+				</div>
+				<div class="modal-body">
+					<form id='reset-passwd-form'>
+						<label for="email">{{mf 'email' 'Email'}}:</label>
+						<input type="email" name="user-email" class="form-control">
+					</form>
+				</div>
+				<div class="modal-footer">
+			    	<input type="button" class="btn btn-default" id="reset-passwd-btn-cancel" data-dismiss="modal" value="{{mf 'cancel'}}" />
+			        <input type="button" class="btn btn-primary" id="reset-passwd-btn" value="{{mf 'reset' 'Reset'}}" />
+			    </div>
+		    </div>
+		</div>
+	</div>
+</template>
+
+<template name="login_popover">
+	<div id="login-popover" class="popover fade bottom" style="display: block; top: 39px; left: 706px;">	
+		<div class="arrow"></div>
+		<h3 class="popover-title" style="display: none;"></h3>
+		<div class="popover-content">
+			<form class="login-form" id="login-form" action="submit">
+				<div class="input-group input-group-sm">
+					<input type="email" id="login_email" class="form-control" placeholder="email">
+					<input type="password" id="login_passwd" class="form-control" placeholder="password">
+					<!-- <span class="input-group-addon " id="login-submit"> -->
+						<button type="submit" class="input-group-addon btn btn-defaultn"> {{mf 'enter' 'Enter'}}</button>
+					<!-- </span> -->
+
+				</div>
+			</form>
+			<a href="#" class="fgpasswd row">I forgot my password</a>
+			<a href="#" class="newUser row">Create user</a>
+			
+		</div>
+	</div>
+</template>
+
+<template name="logoutButton">
+	<div class='logoutdiv'>
+		<input type="button" value="Logout" id="logoutButton" />
+	</div>
+</template>
+
+<template name="register_form">
+	<div class="modal fade row" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		        <h4 class="modal-title" id="registerModalLabel">{{mf 'sing_up' 'Sign up'}}</h4>
+		      </div>
+		      <div class="modal-body"><!--content here-->
+		        <form id="register_form" action="submit">
+					<div class="input-group input-group-sm">
+						<div class="panel panel-info">
+							<div class="panel-heading">{{mf 'basic-info' 'Basic Information'}}:</div>
+							<div class="panel-body">
+								<div class="form-group">
+									<label for="name_registerform">{{mf 'name' 'Name'}}:</label>
+									<input type="text" class="form-control" id="name_registerform" />
+								</div>
+								<div class="form-group">
+									<label for="lastname_registerform">{{mf 'lname' 'Last name'}}:</label>
+									<input type="text" class="form-control" id="lastname_registerform" />
+								</div>
+								<div class="form-group">
+									<label for="birthday_registerform">{{mf 'birthday' 'Birthday'}}:</label>
+									<input type="date" class="form-control" id="birthday_registerform" />
+								</div>
+								<div class="form-group">
+									<label for="masculine_gender">{{mf 'masculine' 'Masculine'}}</label>
+									<input type="radio" name="gender" class="gender" value="Masculine" id="masculine_gender" />
+									<label for="feminine_gender">{{mf 'feminine' 'Feminine'}}</label>
+									<input type="radio" name="gender" class="gender" value="Feminine" id="feminine_gender"/>
+								</div>
+								<div class="form-group">
+									<label for="country_registerform">{{mf 'country' 'Country'}}:</label>
+									<input type="text" class="form-control" id="country_registerform" />
+								</div>
+								<div class="form-group">
+									<label for="city_registerform">{{mf 'city' 'City'}}:</label>
+									<input type="text" class="form-control" id="city_registerform" />
+								</div>
+								<div class="form-group">
+									<label for="native_registerform">{{mf 'native' 'Native Language'}}: </label>
+									<select name="native_registerform" id="native_registerform">
+										{{#each lang_list}}
+											<option value="{{lang}}">{{lang}}</option>
+										{{/each}}
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="panel panel-info">
+							<div class="panel-heading">
+								{{mf 'languages-information' 'Languages informations'}}:
+							</div>
+							<div class="panel-body">
+								<div class="form-group" id="knownlanguages">
+									<label for="knowlanguages">{{mf 'know-language' "I'm fluent in"}}: </label>
+									<span class="btn-group-xs">
+										<span id="add-more-knownlanguages" class="plus glyphicon glyphicon-plus btn btn-default" title="{{mf 'add-more-languages' 'Add more lnaguages'}}"></span>
+									</span>
+									<select name="knowlanguages" class="knownlanguage">
+										<option value="0">{{mf 'select' 'Select'}}</option>
+										{{#each lang_list}}
+											<option value="{{lang}}">{{lang}}</option>
+										{{/each}}
+									</select>
+									<!-- {{#each lang_list}}
+											<input type="checkbox" name="llanguage" id="{{lang}}" value="{{lang}}"><label for="{{lang}}">{{lang}}</label>
+										{{/each}} -->
+								</div>
+								<div class="form-group" id="learninglanguages">
+									<label for="learn_registerform">{{mf 'learning-language' "I'm learning"}}: </label>
+									<span class="btn-group-xs">
+										<span id="add-more-languages" class="plus glyphicon glyphicon-plus btn btn-default" title="{{mf 'add-more-languages' 'Add more lnaguages'}}"></span>
+									</span>
+									<select name="learn_registerform" class="learning-language">
+										<option value="0">{{mf 'select' 'Select'}}</option>
+										{{#each lang_list}}
+											<option value="{{lang}}">{{lang}}</option>
+										{{/each}}
+									</select>
+									<!-- {{#each lang_list}}
+											<input type="checkbox" name="llanguage" id="{{lang}}" value="{{lang}}"><label for="{{lang}}">{{lang}}</label>
+										{{/each}} -->
+								</div>
+							</div>
+						</div>
+						<div class="form-group panel panel-info">
+							<div class="panel-heading">{{mf 'interests' 'Interests'}}:</div>
+							<div class="panel-body">
+							<label for="music">{{mf 'music' 'Music'}}</label>
+							<input type="checkbox" class="" name='interests' id="music" value="Music" />
+							<label for="sports">{{mf 'sports' 'Sports'}}</label>
+							<input type="checkbox" class="" name='interests' id="sports" value="Sports" />
+							<label for="Literature">{{mf 'literature' 'Literature'}}</label>
+							<input type="checkbox" class="" name='interests' id="literature" value="Literature" />
+							<label for="video-games">{{mf 'video-games' 'Video games'}}</label>
+							<input type="checkbox" class="" name='interests' id="video-games" value="Video Games" />
+							<label for="tv-shows">{{mf 'tv-shows' 'T.V. Shows'}}</label>
+							<input type="checkbox" class="" name='interests' id="tv-shows" value="T.V. Shows" />
+							<label for="movies">{{mf 'movies' 'Movies'}}</label>
+							<input type="checkbox" class="" name='interests' id="movies" value="Movies" />
+							<label for="languages">{{mf 'languages' 'Languages'}}</label>
+							<input type="checkbox" class="" name='interests' id="languages" value="Languages" />
+							<label for="education">{{mf 'education' 'Education'}}</label>
+							<input type="checkbox" class="" name='interests' id="education" value="Education" />
+							<label for="teaching">{{mf 'teaching' 'Teaching'}}</label>
+							<input type="checkbox" class="" name='interests' id="teaching" value="Teaching" />
+							<label for="make-friends">{{mf 'make-friends' 'Make new friends'}}</label>
+							<input type="checkbox" class="" name='interests' id="make-friends" value="Make new friends" />
+							<label for="travel">{{mf 'travel' 'Travel abroad'}}</label>
+							<input type="checkbox" class="" name='interests' id="travel" value="Travel abroad" />
+							</div>
+						</div>
+						<div class="panel panel-info">
+							<div class="panel-heading">
+								{{mf 'login-info' 'Login information'}}:
+							</div>
+							<div class="panel-body">
+								<div class="form-group">
+									<label for="email_registerform">{{mf 'email' 'Email'}}:</label>
+									<input type="email" class="form-control" id="email_registerform" />
+								</div>
+								<div class="form-group">
+									<label for="password_registerform">{{mf 'passwd' 'Password'}}:</label>
+									<input type="password" class="form-control" id="passwd_registerform" />
+								</div>
+								<div class="form-group">
+									<label for="passwdcheck_registerform">{{mf 'passwd_check' 'Password check'}}:</label>
+									<input type="password" class="form-control" id="passwdcheck_registerform" />
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+		    </div>
+		    <div class="modal-footer">
+		    	<button type="button" class="btn btn-default" id="crrbutton_close" data-dismiss="modal">{{mf 'close' 'Close'}}</button>
+		        <button type="button" class="register-btn btn btn-primary" id="register-btn">{{mf 'sing_up' 'Sign up'}}</button>
+		    </div>
+		    </div>
+		  </div>
+		</div>
+</template>

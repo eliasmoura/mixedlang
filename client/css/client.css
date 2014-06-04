@@ -1,0 +1,227 @@
+/* div.divchat{
+    min-height: 200px;
+    
+    max-height: 600ṕx;
+    overflow-x: hidden;
+    resize: none;
+} */
+
+html, body {height: 100%;}
+
+div.container#chat-messages
+{
+    /*height:500px;*/
+}
+.container-fluid, .divchat, #content
+{
+    height:100%;
+}
+#chat-messages, .sidebar, .sidebar
+{
+    overflow-y: auto;
+}
+.online
+{
+    color: #18CE16;
+}
+.offline
+{
+    color:#7E7C7C;
+}
+.away
+{
+    color: #F2974C;
+}
+.busy
+{
+    color: #BB0019;
+}
+
+
+/* @font-face {
+  font-family: 'Glyphicons Halflings';
+  src: url('/packages/bootstrap-3/bootstrap-3/fonts/glyphicons-halflings-regular.eot');
+  src: url('/packages/bootstrap-3/bootstrap-3/fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('/packages/bootstrap-3/bootstrap-3/fonts/glyphicons-halflings-regular.woff') format('woff'), url('/packages/bootstrap-3/bootstrap-3/fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('/packages/bootstrap-3/bootstrap-3/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+}
+ *//* body{
+    padding: 10px;
+    font-family: Verdana, sans-serif;
+}
+
+.login-buttons-dropdown-align-right{
+    float: right;
+}
+div.user{
+    display: block;
+}
+div.register_form{
+    width: 350px;
+    display: none;
+}
+div.register_form input{
+    width: 350px;
+    display: block;
+}
+div.register_form label{
+    height: 60px;
+    display: block;
+}
+div.register_form label input{
+    height: 25px;
+}
+div.divmessages div.message{
+    display: block;
+}
+
+div.register_form label input{
+    float:right;
+}
+div.login_form{
+    display: block;
+}
+div.logoutdiv{
+    display: block;
+}
+
+div.divmessages{
+    padding: 5px;
+    min-height: 200px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    word-break: break-all;
+    background-color: #0B7A96;
+    resize: both;
+}
+div.message:hover{
+    background: #11748C;
+}
+
+label.stusername{
+    font-family: Verdana;
+    font-style: oblique;
+    display: inline-block;
+}
+label.stusername:hover{
+    font-color: #B9C065;
+    background: #B9C065;
+}
+div.chatusers{
+    float: left;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+#message{
+    height: 50px;
+}
+div.page-content{
+
+}
+div.chatroon-name{
+    text-align: center;
+}
+ */
+
+.context-menu-list {
+    background: none repeat scroll 0 0 #EEEEEE;
+    /*border: 1px solid #DDDDDD;*/
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    display: block;
+    font-family: Verdana,Arial,Helvetica,sans-serif, #000000;
+    color: #000000;
+    font-size: 11px;
+    list-style-type: none;
+    margin: 0;
+    max-width: 250px;
+    min-width: 120px;
+    padding: 0;
+    position: absolute;
+}
+.context-menu-item {
+    -moz-user-select: none;
+    /*background-color: #EEEEEE;*/
+    display: block;
+    padding: 2px 2px 2px 24px;
+    position: relative;
+    min-width: 100px;
+}
+.context-menu-separator {
+    /*border-bottom: 1px solid #DDDDDD;*/
+    padding-bottom: 0;
+}
+.context-menu-item > label > input, .context-menu-item > label > textarea {
+    -moz-user-select: text;
+}
+.context-menu-item.hover {
+    /*background-color: #3399FF;*/
+    cursor: pointer;
+}
+.context-menu-item.disabled {
+    /*color: #666666;*/
+}
+.context-menu-input.hover, .context-menu-item.disabled.hover {
+    /*background-color: #EEEEEE;*/
+    cursor: default;
+}
+.context-menu-submenu:after {
+    /*color: #666666;*/
+    content: ">";
+    position: absolute;
+    right: 3px;
+    top: 0;
+    z-index: 1;
+}
+.context-menu-item.icon {
+    background-position: 4px 2px;
+    background-repeat: no-repeat;
+    min-height: 16px;
+}
+.context-menu-item.icon-edit {
+    background-image: url("../public/img/layout/Addressbook-Contacts-icon16.png");
+}
+.context-menu-item.icon-cut {
+    background-image: url("images/cut.png");
+}
+.context-menu-item.icon-copy {
+    background-image: url("images/page_white_copy.png");
+}
+.context-menu-item.icon-paste {
+    background-image: url("images/page_white_paste.png");
+}
+.context-menu-item.icon-delete {
+    background-image: url("images/page_white_delete.png");
+}
+.context-menu-item.icon-add {
+    background-image: url("images/page_white_add.png");
+}
+.context-menu-item.icon-quit {
+    background-image: url("images/door.png");
+}
+.context-menu-input > label > * {
+    vertical-align: top;
+}
+.context-menu-input > label > input[type="checkbox"], .context-menu-input > label > input[type="radio"] {
+    margin-left: -17px;
+}
+.context-menu-input > label > span {
+    margin-left: 5px;
+}
+.context-menu-input > label, .context-menu-input > label > input[type="text"], .context-menu-input > label > textarea, .context-menu-input > label > select {
+    -moz-box-sizing: border-box;
+    display: block;
+    width: 100%;
+}
+.context-menu-input > label > textarea {
+    height: 100px;
+}
+.context-menu-item > .context-menu-list {
+    display: none;
+    right: -5px;
+    top: 5px;
+}
+.context-menu-item.hover > .context-menu-list {
+    display: block;
+}
+.context-menu-accesskey {
+    text-decoration: underline;
+}
